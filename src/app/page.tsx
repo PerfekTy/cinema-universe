@@ -1,8 +1,10 @@
+import { Navigation } from "@/components/navigation";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="md:container ">
+      <Navigation />
       <ThemeSwitcher />
     </main>
   );
