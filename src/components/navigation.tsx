@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 import { Twirl as Hamburger } from "hamburger-react";
 import { Button } from "./ui/button";
+import { routes } from "@/lib/routes";
 
 export const Navigation = () => {
   const [isOpen, setOpen] = useState(false);
@@ -15,26 +16,22 @@ export const Navigation = () => {
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="gradient-background p-3 flex justify-between items-center md:rounded-b-md md:justify-between md:p-4 text-sm md:mb-4"
+        className="gradient-background p-3 flex justify-between items-center lg:rounded-b-md md:justify-between md:p-4 text-sm md:mb-4"
       >
-        <h1 className="text-white w-full md:pr-5 text-lg md:text-2xl">
+        <h1 className="text-white w-full md:mr-5 text-lg md:text-xl">
           Cinema Universe
         </h1>
-        <motion.ul className="hidden md:flex gap-7 items-center text-white text-[16px]">
-          <Link className="" href="">
-            Repertuar
-          </Link>
-          <Link className="" href="">
-            Wydarzenia
-          </Link>
-          <Link className="" href="">
-            Promocje
-          </Link>
-          <Link className="" href="">
-            Newsy
-          </Link>
-          <Button className="text-[#4FBBD6] font-bold uppercase tracking-wider hover:bg-slate-800 bg-black">
-            Zaloguj się
+        <motion.ul className="hidden md:flex gap-8 items-center text-white text-[16px]">
+          {routes.map((rotue) => (
+            <Link key={rotue.name} href={rotue.path} className="link-container">
+              {rotue.name}
+            </Link>
+          ))}
+          <Button
+            asChild
+            className="text-[#4FBBD6] font-bold uppercase tracking-wider hover:bg-slate-800 bg-black"
+          >
+            <Link href="/auth/login">Zaloguj się</Link>
           </Button>
         </motion.ul>
         <span className="md:hidden">
@@ -51,31 +48,24 @@ export const Navigation = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="top-[73px] left-0 w-full flex flex-col items-center shadow-md dark:shadow-slate-800 mb-4"
+          className="absolute w-full z-50 top-[73px] grid grid-cols-1 justify-center text-center shadow-md dark:shadow-slate-800 mb-4 divide-y"
         >
+          {routes.map((rotue) => (
+            <Link
+              onClick={() => setOpen(false)}
+              key={rotue.name}
+              href={rotue.path}
+              className="p-3 w-full hover:dark:bg-slate-800 hover:bg-slate-100 "
+            >
+              {rotue.name}
+            </Link>
+          ))}
           <Link
-            href=""
-            className="p-3 w-full text-center hover:dark:bg-slate-800 hover:bg-slate-100"
+            onClick={() => setOpen(false)}
+            href="/auth/login"
+            className="p-3 w-full font-bold uppercase hover:dark:bg-slate-800 hover:bg-slate-100"
           >
-            Repertuar
-          </Link>
-          <Link
-            href=""
-            className="p-3 w-full text-center hover:dark:bg-slate-800 hover:bg-slate-100"
-          >
-            Wydarzenia{" "}
-          </Link>
-          <Link
-            href=""
-            className="p-3 w-full text-center hover:dark:bg-slate-800 hover:bg-slate-100"
-          >
-            Promocje
-          </Link>
-          <Link
-            href=""
-            className="p-3 w-full text-center hover:dark:bg-slate-800 hover:bg-slate-100"
-          >
-            Newsy
+            Zaloguj się
           </Link>
         </motion.ul>
       )}

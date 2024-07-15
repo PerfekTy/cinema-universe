@@ -62,6 +62,26 @@
   }
 }
 
+.link-container {
+  position: relative;
+  display: inline-block;
+}
+
+.link-container::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -2px;
+  left: 0;
+  background-color: white;
+  transition: width 0.3s ease-in-out;
+}
+
+.link-container:hover::after {
+  width: 100%;
+}
+
 .animate-gradient {
   background-size: 300%;
   -webkit-animation: animatedgradient 6s ease infinite alternate;
