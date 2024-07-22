@@ -31,7 +31,7 @@ export const Navigation = () => {
             asChild
             className="text-[#4FBBD6] font-bold uppercase tracking-wider hover:bg-slate-800 bg-black"
           >
-            <Link href="/auth/login">Zaloguj się</Link>
+            <Link href="/auth">Zaloguj się</Link>
           </Button>
         </motion.ul>
         <span className="md:hidden">
@@ -62,7 +62,7 @@ export const Navigation = () => {
           ))}
           <Link
             onClick={() => setOpen(false)}
-            href="/auth/login"
+            href="/auth"
             className="p-3 w-full font-bold uppercase hover:dark:bg-slate-800 hover:bg-slate-100"
           >
             Zaloguj się
