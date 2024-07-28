@@ -6,7 +6,8 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "target": "es2022", // Ensure ES2022 or higher
+    "module": "esnext", // esnext supports top-level await
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
