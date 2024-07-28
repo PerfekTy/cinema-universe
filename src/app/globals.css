@@ -58,7 +58,7 @@
   }
 
   .gradient-background {
-    @apply bg-gradient-to-r from-[#000000] via-[#26119C] to-[#4FBBD6] bg-300% animate-gradient;
+    @apply animate-gradient bg-gradient-to-r from-[#000000] via-[#26119C] to-[#4FBBD6] bg-300%;
   }
 }
 
@@ -79,6 +79,10 @@
 }
 
 .link-container:hover::after {
+  width: 100%;
+}
+
+.link-container-active::after {
   width: 100%;
 }
 
