@@ -11,24 +11,30 @@ import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { BiLeftArrow } from "react-icons/bi";
-
 import { register } from "../../action/user";
 
 export function UserAuthForm() {
   const [showForm, setShowForm] = useState<boolean>(false);
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter" && !showForm) {
+      event.preventDefault();
+      setShowForm(true);
+    }
+  };
 
   return (
     <div>
       <Button asChild variant="ghost" className="p-4">
         <Link
           href=".."
-          className="absolute left-[51%] right-1/2 top-5 mx-auto flex w-fit items-center gap-2 rounded-md border"
+          className="absolute left-5 top-5 mx-auto flex w-fit items-center gap-2 rounded-md border lg:left-[51%] lg:right-1/2"
         >
           <BiLeftArrow size={20} />
           <p>Back</p>
         </Link>
       </Button>
-      <div className={"relative grid gap-6"}>
+      <div className="relative grid gap-6">
         <form action={register}>
           <div className="grid gap-2">
             {showForm && (
@@ -40,7 +46,7 @@ export function UserAuthForm() {
                   <Input
                     id="name"
                     placeholder="Jane Doe"
-                    type="name"
+                    type="text"
                     name="name"
                     autoCapitalize="none"
                     autoComplete="name"
@@ -74,17 +80,21 @@ export function UserAuthForm() {
                 autoCapitalize="none"
                 autoComplete="email"
                 autoCorrect="off"
+                onKeyDown={handleKeyDown}
               />
             </div>
-            {showForm ? (
-              <Button type="submit">Zaloguj się</Button>
-            ) : (
-              <Button type="button" onClick={() => setShowForm(true)}>
-                Zaloguj się przez e-mail
-              </Button>
-            )}
+            {showForm ? <Button type="submit">Zaloguj się</Button> : null}
           </div>
         </form>
+        {!showForm && (
+          <Button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className={`${showForm ? "hidden" : "-mt-5"}`}
+          >
+            Zaloguj się przez e-mail
+          </Button>
+        )}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

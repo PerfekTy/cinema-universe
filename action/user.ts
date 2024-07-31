@@ -22,7 +22,7 @@ export const register = async (formData: FormData) => {
 
   if (existingUser) throw new Error("User already exists");
 
-  await db.insert(users).values(newUser);
+  // await db.insert(users).values(newUser);
 
   console.log("User registered", newUser);
   redirect("/");

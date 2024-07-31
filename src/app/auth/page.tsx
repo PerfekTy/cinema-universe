@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-
-import { UserAuthForm } from "@/components/user-auth-form";
 import Image from "next/image";
+
 import {
   Carousel,
   CarouselContent,
@@ -10,17 +9,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { UserAuthForm } from "@/components/user-auth-form";
 
 export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
+  title: "Zaloguj się",
+  description: "Zaloguj się i dowoli korzystaj z serwisu Cinema Universe",
 };
 
-export default function Login() {
+export default async function Login() {
   return (
     <>
       <div className="container relative flex h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <Carousel className="relative hidden h-screen lg:flex">
+        <Carousel className="relative hidden h-screen border-r lg:flex lg:justify-center">
           <CarouselContent>
             <CarouselItem>
               <Image
