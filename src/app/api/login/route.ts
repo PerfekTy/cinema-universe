@@ -16,7 +16,8 @@ export const POST = async (req: NextRequest) => {
       password,
     });
 
-    return NextResponse.json({ message: "You're logged in." }, { status: 200 });
+    NextResponse.json({ message: "You're logged in." }, { status: 200 });
+    return NextResponse.redirect(new URL("/", req.nextUrl));
   } catch (error: any) {
     return NextResponse.json(
       { message: "Could not authenticate.", error: error.message },

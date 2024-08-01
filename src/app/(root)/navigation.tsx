@@ -8,10 +8,13 @@ import { Twirl as Hamburger } from "hamburger-react";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/lib/routes";
 import { usePathname } from "next/navigation";
+import { User } from "next-auth";
 
-export const Navigation = () => {
+export const Navigation = ({ user }: { user: User | undefined }) => {
   const pathname = usePathname();
   const [isOpen, setOpen] = useState(false);
+
+  console.log("user", user);
 
   return (
     <>
@@ -35,12 +38,19 @@ export const Navigation = () => {
               {route.name}
             </Link>
           ))}
-          <Button
-            asChild
-            className="bg-slate-200 font-bold uppercase tracking-wider text-black hover:bg-slate-300"
-          >
-            <Link href="/auth">Zaloguj się</Link>
-          </Button>
+
+          {user ? (
+            <Button className="bg-slate-200 font-bold uppercase tracking-wider text-black hover:bg-slate-300">
+              Wyloguj się
+            </Button>
+          ) : (
+            <Button
+              asChild
+              className="bg-slate-200 font-bold uppercase tracking-wider text-black hover:bg-slate-300"
+            >
+              <Link href="/auth">Zaloguj się</Link>
+            </Button>
+          )}
         </motion.ul>
         <span className="md:hidden">
           <Hamburger
@@ -68,13 +78,23 @@ export const Navigation = () => {
               {rotue.name}
             </Link>
           ))}
-          <Link
-            onClick={() => setOpen(false)}
-            href="/auth"
-            className="w-full p-3 font-bold uppercase hover:bg-slate-100 hover:dark:bg-slate-800"
-          >
-            Zaloguj się
-          </Link>
+          {user ? (
+            <Link
+              onClick={() => setOpen(false)}
+              href="/auth"
+              className="w-full p-3 font-bold uppercase hover:bg-slate-100 hover:dark:bg-slate-800"
+            >
+              Wyloguj się
+            </Link>
+          ) : (
+            <Link
+              onClick={() => setOpen(false)}
+              href="/auth"
+              className="w-full p-3 font-bold uppercase hover:bg-slate-100 hover:dark:bg-slate-800"
+            >
+              Zaloguj się
+            </Link>
+          )}
         </motion.ul>
       )}
     </>

@@ -10,13 +10,21 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { UserAuthForm } from "@/app/auth/user-auth-form";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Zaloguj się",
   description: "Zaloguj się i dowoli korzystaj z serwisu Cinema Universe",
 };
 
-export default function Login() {
+export default async function Authentication() {
+  const session = await getSession();
+
+  if (session?.user) {
+    redirect("/");
+  }
+
   return (
     <>
       <div className="container relative flex h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">

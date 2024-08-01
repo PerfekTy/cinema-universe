@@ -8,6 +8,20 @@
       "when": 1722501050373,
       "tag": "0000_nostalgic_living_mummy",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1722532263585,
+      "tag": "0001_gray_shinobi_shaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1722532470166,
+      "tag": "0002_stiff_blue_blade",
+      "breakpoints": true
     }
   ]
 }

@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!email || !password) {
           throw new CredentialsSignin(
-            "Please provive both email and password.",
+            "Please provide both email and password.",
           );
         }
 
@@ -35,8 +35,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const isPasswordMatch = await compare(password, user.password);
 
         if (!isPasswordMatch) {
-          throw new Error("Password did not matched.");
+          throw new Error("Password did not match.");
         }
+
         const userData: Omit<
           User,
           "createdAt" | "updatedAt" | "password" | "providerId"
@@ -56,5 +57,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   pages: {
     signIn: "/auth",
+  },
+
+  callbacks: {
+    async session({ session, token }) {
+      if (token?.sub) {
+        session.user.id = token.sub;
+        session.user.role = token.role;
+      }
+      return session;
+    },
+
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+      }
+      return token;
+    },
+
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        try {
+          const { email, name, id, image } = user;
+          const existingUser = await db.query.users.findFirst({
+            where: eq(users.email, email),
+          });
+
+          if (!existingUser) {
+            await db.insert(users).values({
+              email,
+              name,
+              role: "user",
+              providerId: id,
+              image,
+            });
+          }
+        } catch (error) {
+          throw new Error("Error while creating user.");
+        }
+      }
+
+      if (account?.provider === "credentials") {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 });
