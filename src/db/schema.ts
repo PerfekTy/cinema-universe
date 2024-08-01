@@ -1,6 +1,6 @@
 import { text, timestamp, pgTable, uuid } from "drizzle-orm/pg-core";
 
-export const users = pgTable("user", {
+export const users = pgTable("users", {
   id: uuid("id"),
   name: text("name").notNull(),
   email: text("email").notNull(),

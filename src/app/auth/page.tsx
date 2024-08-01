@@ -9,14 +9,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { UserAuthForm } from "@/components/user-auth-form";
+import dynamic from "next/dynamic";
+import { UserAuthForm } from "@/app/auth/user-auth-form";
 
 export const metadata: Metadata = {
   title: "Zaloguj się",
   description: "Zaloguj się i dowoli korzystaj z serwisu Cinema Universe",
 };
 
-export default async function Login() {
+export default function Login() {
   return (
     <>
       <div className="container relative flex h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">

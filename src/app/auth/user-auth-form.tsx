@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { BiLeftArrow } from "react-icons/bi";
-import { register } from "../../action/user";
 
 export function UserAuthForm() {
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -20,6 +20,23 @@ export function UserAuthForm() {
     if (event.key === "Enter" && !showForm) {
       event.preventDefault();
       setShowForm(true);
+    }
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const user = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+      };
+
+      await axios.post("/api/login", user);
+    } catch (error: any) {
+      console.error("Submission error:", error.response?.data || error.message);
     }
   };
 
@@ -35,7 +52,7 @@ export function UserAuthForm() {
         </Link>
       </Button>
       <div className="relative grid gap-6">
-        <form action={register}>
+        <form onSubmit={onSubmit}>
           <div className="grid gap-2">
             {showForm && (
               <>
