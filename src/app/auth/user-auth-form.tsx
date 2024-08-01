@@ -4,22 +4,29 @@ import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-import { FaApple } from "react-icons/fa";
+import { FaApple, FaInstagram } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { BiLeftArrow } from "react-icons/bi";
+import { signIn } from "../../../auth";
 
 export function UserAuthForm() {
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showRegisterForm, setShowRegisterForm] = useState<boolean>(false);
+  const [showLoginForm, setShowLoginForm] = useState<boolean>(true);
 
   const handleKeyDown = (event: any) => {
-    if (event.key === "Enter" && !showForm) {
+    if (event.key === "Enter" && !showRegisterForm) {
       event.preventDefault();
-      setShowForm(true);
+      setShowRegisterForm(true);
+    }
+
+    if (event.key === "Enter" && !showLoginForm) {
+      event.preventDefault();
+      setShowLoginForm(false);
     }
   };
 
@@ -34,7 +41,18 @@ export function UserAuthForm() {
         password: formData.get("password"),
       };
 
-      await axios.post("/api/login", user);
+      if (!showLoginForm) {
+        // await signIn("credentials", {
+        //   redirect: false,
+        //   callbackUrl: "/",
+        //   email: user.email,
+        //   password: user.password,
+        // });
+      }
+
+      if (showRegisterForm) {
+        await axios.post("/api/register", user);
+      }
     } catch (error: any) {
       console.error("Submission error:", error.response?.data || error.message);
     }
@@ -54,7 +72,7 @@ export function UserAuthForm() {
       <div className="relative grid gap-6">
         <form onSubmit={onSubmit}>
           <div className="grid gap-2">
-            {showForm && (
+            {showRegisterForm && (
               <>
                 <div className="my-2 grid gap-1">
                   <Label className="mb-1" htmlFor="name">
@@ -100,16 +118,57 @@ export function UserAuthForm() {
                 onKeyDown={handleKeyDown}
               />
             </div>
-            {showForm ? <Button type="submit">Zaloguj się</Button> : null}
+            {!showLoginForm && (
+              <div className="my-2 grid gap-1">
+                <Label className="mb-1" htmlFor="password">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  placeholder="********"
+                  type="password"
+                  name="password"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                />
+              </div>
+            )}
+            {!showLoginForm && (
+              <Button type="submit" className="bg-green-500">
+                Zaloguj się
+              </Button>
+            )}
+            {showRegisterForm && (
+              <Button type="submit" className="bg-green-500">
+                Zarejestruj się
+              </Button>
+            )}
           </div>
         </form>
-        {!showForm && (
+        {!showRegisterForm && (
           <Button
             type="button"
-            onClick={() => setShowForm(true)}
-            className={`${showForm ? "hidden" : "-mt-5"}`}
+            variant="secondary"
+            onClick={() => {
+              setShowRegisterForm(true);
+              setShowLoginForm(true);
+            }}
+            className={`${showRegisterForm ? "hidden" : "-mt-4"}`}
           >
-            Zaloguj się przez e-mail
+            Zarejestruj się przez email
+          </Button>
+        )}
+        {showLoginForm && (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => {
+              setShowLoginForm(false);
+              setShowRegisterForm(false);
+            }}
+            className={`${showLoginForm ? "-mt-4" : "hidden"}`}
+          >
+            Zaloguj się przez email
           </Button>
         )}
         <div className="relative">
@@ -122,18 +181,38 @@ export function UserAuthForm() {
             </span>
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <Button variant="outline" type="button" className="flex gap-2 p-3">
-            <p>Kontynuuj przez Facebook</p>
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            variant="outline"
+            type="button"
+            className="flex items-center gap-2 p-3"
+          >
             <RiFacebookBoxFill size={24} color="#0866ff" />
+            <p>Facebook</p>
           </Button>
-          <Button variant="outline" type="button" className="flex gap-2 p-3">
-            <p>Kontynuuj przez Google</p>
+          <Button
+            variant="outline"
+            type="button"
+            className="flex items-center gap-2 p-3"
+          >
             <FcGoogle size={24} />
+            <p>Google</p>
           </Button>
-          <Button variant="outline" type="button" className="flex gap-2 p-3">
-            <p>Kontynuuj przez Apple</p>
+          <Button
+            variant="outline"
+            type="button"
+            className="flex items-center gap-2 p-3"
+          >
             <FaApple size={24} />
+            <p>Apple</p>
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            className="flex items-center gap-2 p-3"
+          >
+            <FaInstagram size={24} />
+            <p>Instagram</p>
           </Button>
         </div>
       </div>

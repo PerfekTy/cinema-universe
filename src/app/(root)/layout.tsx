@@ -1,4 +1,4 @@
-import { Navigation } from "@/components/navigation";
+import { Navigation } from "./navigation";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

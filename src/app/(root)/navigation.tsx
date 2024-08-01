@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { Twirl as Hamburger } from "hamburger-react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { routes } from "@/lib/routes";
 import { usePathname } from "next/navigation";
 
@@ -37,7 +37,7 @@ export const Navigation = () => {
           ))}
           <Button
             asChild
-            className="bg-black font-bold uppercase tracking-wider text-[#4FBBD6] hover:bg-slate-800"
+            className="bg-slate-200 font-bold uppercase tracking-wider text-black hover:bg-slate-300"
           >
             <Link href="/auth">Zaloguj się</Link>
           </Button>
