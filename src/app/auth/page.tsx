@@ -9,7 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import dynamic from "next/dynamic";
 import { UserAuthForm } from "@/app/auth/user-auth-form";
 
 export const metadata: Metadata = {

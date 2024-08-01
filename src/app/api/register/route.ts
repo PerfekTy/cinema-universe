@@ -5,6 +5,10 @@ import { eq } from "drizzle-orm";
 import { hash } from "bcryptjs";
 
 export async function POST(req: NextRequest) {
+  if (req.method !== "POST") {
+    throw new Error("Method Not Allowed.");
+  }
+
   try {
     const { name, email, password } = await req.json();
 

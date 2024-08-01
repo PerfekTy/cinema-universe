@@ -12,7 +12,6 @@ import { FaApple, FaInstagram } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { BiLeftArrow } from "react-icons/bi";
-import { signIn } from "../../../auth";
 
 export function UserAuthForm() {
   const [showRegisterForm, setShowRegisterForm] = useState<boolean>(false);
@@ -30,28 +29,32 @@ export function UserAuthForm() {
     }
   };
 
+  const login = async (email: string, password: string) => {
+    if (!showLoginForm) {
+      await axios.post("/api/login", {
+        email,
+        password,
+      });
+    }
+  };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const formData = new FormData(e.currentTarget);
+    const user = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
+
     try {
-      const formData = new FormData(e.currentTarget);
-      const user = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-      };
-
-      if (!showLoginForm) {
-        // await signIn("credentials", {
-        //   redirect: false,
-        //   callbackUrl: "/",
-        //   email: user.email,
-        //   password: user.password,
-        // });
-      }
-
+      await login(user.email, user.password);
       if (showRegisterForm) {
-        await axios.post("/api/register", user);
+        const res = await axios.post("/api/register", user);
+        if (res.status === 200) {
+          await login(user.email, user.password);
+        }
       }
     } catch (error: any) {
       console.error("Submission error:", error.response?.data || error.message);
