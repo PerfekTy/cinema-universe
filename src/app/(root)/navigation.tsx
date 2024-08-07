@@ -8,13 +8,14 @@ import { Twirl as Hamburger } from "hamburger-react";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/lib/routes";
 import { usePathname } from "next/navigation";
-import { User } from "next-auth";
+import { signOut, useSession } from "next-auth/react";
 
-export const Navigation = ({ user }: { user: User | undefined }) => {
+export const Navigation = () => {
+  const user = useSession();
   const pathname = usePathname();
   const [isOpen, setOpen] = useState(false);
 
-  console.log("user", user);
+  console.log(user);
 
   return (
     <>
@@ -39,8 +40,11 @@ export const Navigation = ({ user }: { user: User | undefined }) => {
             </Link>
           ))}
 
-          {user ? (
-            <Button className="bg-slate-200 font-bold uppercase tracking-wider text-black hover:bg-slate-300">
+          {user?.data ? (
+            <Button
+              onClick={async () => await signOut()}
+              className="bg-slate-200 font-bold uppercase tracking-wider text-black hover:bg-slate-300"
+            >
               Wyloguj się
             </Button>
           ) : (
@@ -78,14 +82,16 @@ export const Navigation = ({ user }: { user: User | undefined }) => {
               {rotue.name}
             </Link>
           ))}
-          {user ? (
-            <Link
-              onClick={() => setOpen(false)}
-              href="/auth"
+          {user?.data ? (
+            <Button
+              onClick={async () => {
+                setOpen(false);
+                await signOut();
+              }}
               className="w-full p-3 font-bold uppercase hover:bg-slate-100 hover:dark:bg-slate-800"
             >
               Wyloguj się
-            </Link>
+            </Button>
           ) : (
             <Link
               onClick={() => setOpen(false)}

@@ -4,9 +4,15 @@ import { compare } from "bcryptjs";
 import { eq } from "drizzle-orm";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    }),
+
     Credentials({
       name: "Credentials",
       credentials: {
@@ -48,6 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: user.name,
           email: user.email,
           role: user.role,
+          image: user.image,
         };
 
         return userData;
@@ -63,38 +70,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token?.sub) {
         session.user.id = token.sub;
-        session.user.role = token.role;
       }
       return session;
     },
 
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
+        token.role = user.name;
       }
       return token;
     },
 
-    async signIn({ user, account }) {
+    async signIn({ account }) {
       if (account?.provider === "google") {
-        try {
-          const { email, name, id, image } = user;
-          const existingUser = await db.query.users.findFirst({
-            where: eq(users.email, email),
-          });
-
-          if (!existingUser) {
-            await db.insert(users).values({
-              email,
-              name,
-              role: "user",
-              providerId: id,
-              image,
-            });
-          }
-        } catch (error) {
-          throw new Error("Error while creating user.");
-        }
+        return true;
       }
 
       if (account?.provider === "credentials") {

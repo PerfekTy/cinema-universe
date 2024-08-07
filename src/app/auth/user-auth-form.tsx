@@ -12,6 +12,7 @@ import { FaApple, FaInstagram } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { BiLeftArrow } from "react-icons/bi";
+import { signIn } from "next-auth/react";
 
 export function UserAuthForm() {
   const [showRegisterForm, setShowRegisterForm] = useState<boolean>(false);
@@ -31,10 +32,7 @@ export function UserAuthForm() {
 
   const login = async (email: string, password: string) => {
     if (!showLoginForm) {
-      await axios.post("/api/login", {
-        email,
-        password,
-      });
+      await signIn("credentials", { email, password }, { callbackUrl: "/" });
     }
   };
 
@@ -197,6 +195,7 @@ export function UserAuthForm() {
             variant="outline"
             type="button"
             className="flex items-center gap-2 p-3"
+            onClick={() => signIn("google", { callbackUrl: "/" })}
           >
             <FcGoogle size={24} />
             <p>Google</p>
